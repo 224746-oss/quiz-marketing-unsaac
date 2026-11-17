@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Quiz de Marketing Estratégico y Empresarial — UNSAAC</title>
+<style>
+:root{--navy:#172554;--blue:#2563eb;--bg:#f3f6fc;--ink:#172033;--muted:#64748b;--green:#15803d;--red:#b91c1c}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);font:16px/1.5 system-ui,-apple-system,Segoe UI,sans-serif;color:var(--ink)}
+header{background:linear-gradient(120deg,#172554,#2563eb);color:white;padding:34px 18px}
+.wrap{max-width:850px;margin:auto;padding:0 16px}.tag{display:inline-block;background:#dbeafe;color:#1e40af;padding:4px 10px;border-radius:20px;font-size:12px;font-weight:700}
+h1{font-size:clamp(25px,5vw,38px);line-height:1.15;margin:12px 0}header p{margin:6px 0;color:#e0e7ff}
+main{padding:24px 0 50px}.panel,.question{background:white;border:1px solid #e2e8f0;border-radius:18px;padding:22px;margin:16px 0;box-shadow:0 5px 20px #0f172a0a}
+.row{display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+select,input{font:inherit;padding:10px 12px;border:1px solid #cbd5e1;border-radius:10px;background:white}
+button{font:inherit;font-weight:700;border:0;border-radius:11px;padding:11px 17px;background:var(--blue);color:white;cursor:pointer}
+button.secondary{background:#e2e8f0;color:#1e293b}button:disabled{opacity:.45;cursor:not-allowed}
+.progress{height:9px;background:#e2e8f0;border-radius:20px;overflow:hidden;margin:14px 0}.bar{height:100%;width:0;background:#22c55e;transition:width .2s}
+.qnum{color:var(--muted);font-size:13px;font-weight:700}.prompt{font-size:19px;font-weight:750;margin:12px 0 16px}
+.option{display:flex;gap:11px;align-items:flex-start;border:1px solid #dbe3ef;padding:12px;border-radius:12px;margin:9px 0;cursor:pointer}
+.option:hover{border-color:#60a5fa;background:#f8fbff}.option input{margin-top:4px;accent-color:var(--blue)}
+.feedback{padding:13px;border-radius:12px;margin-top:14px;font-weight:600}.good{background:#dcfce7;color:#166534}.bad{background:#fee2e2;color:#991b1b}
+.small{font-size:13px;color:var(--muted)}.hidden{display:none!important}.result{font-size:30px;font-weight:800;color:var(--navy)}
+footer{text-align:center;color:var(--muted);font-size:12px;padding:20px}
+</style>
+</head>
+<body>
+<header><div class="wrap"><span class="tag">UNSAAC · FACULTAD DE ECONOMÍA</span><h1>Quiz de Marketing Estratégico y Empresarial</h1><p>30 preguntas · 6 grupos · opción múltiple, verdadero/falso y completar</p><p class="small" style="color:#dbeafe">Responde, comprueba tu respuesta y avanza. Puedes repetir cada pregunta hasta acertar.</p></div></header>
+<main class="wrap">
+<section class="panel">
+ <div class="row"><div><strong>Tu práctica</strong><div class="small">Elige un grupo o desarrolla los seis en orden.</div></div>
+ <select id="groupSelect" aria-label="Seleccionar grupo"></select></div>
+ <div class="progress"><div class="bar" id="bar"></div></div>
+ <div class="row"><span id="groupLabel" class="qnum"></span><span id="countLabel" class="qnum"></span></div>
+</section>
+<section class="question" id="quiz">
+ <div class="qnum" id="kind"></div><div class="prompt" id="prompt"></div>
+ <div id="answers"></div>
+ <div id="feedback" class="hidden"></div>
+ <div class="row" style="margin-top:18px"><button id="check">Comprobar respuesta</button><button id="next" class="hidden">Siguiente pregunta →</button></div>
+ <p class="small" id="hint">No se muestra la solución hasta que compruebes tu respuesta.</p>
+</section>
+<section class="panel hidden" id="finished">
+ <div class="tag">GRUPO COMPLETADO</div><h2>¡Buen trabajo!</h2><div class="result" id="score"></div><p id="summary"></p>
+ <div class="row"><button id="retry" class="secondary">Repetir grupo</button><button id="nextGroup">Ir al siguiente grupo →</button></div>
+</section>
+<section class="panel"><strong>Cómo compartirlo</strong><p class="small">Este archivo funciona en computadora y celular, y califica las respuestas en el navegador. Para que tus compañeros entren con un enlace público, primero hay que publicarlo en un servicio de alojamiento web; el archivo por sí solo no crea una dirección pública.</p></section>
+</main><footer>Material de práctica elaborado a partir del documento de preguntas del curso. No reemplaza la evaluación oficial.</footer>
+<script>
+const groups = [
+{title:"Grupo 1 · Marketing de experiencias y storytelling en turismo",q:[
+{t:"mc",p:"En el contexto de la sección de comidas del Mercado de San Pedro, ¿de qué manera el storytelling y la diferenciación permiten a los puestos competir por valor y no solo por precio?",o:["Reduciendo el costo de los insumos tradicionales para ofrecer tarifas más competitivas al turista.","Convirtiendo cada plato en una vivencia cultural auténtica que genera identidad y conexión emocional.","Modernizando la infraestructura física del mercado para proyectar una imagen comercial renovada.","Reemplazando la atención directa de las caseras por campañas publicitarias sobre los ingredientes.","Priorizando exclusivamente la presentación estética de los puestos para captar la atención visual."],a:1},
+{t:"mc",p:"Dentro del modelo Market Engine aplicado al marketing experiencial, ¿qué distingue a la dimensión educativa de las dimensiones estética y de entretenimiento?",o:["Se encuentra presente de manera natural gracias a la variedad de colores y el movimiento del mercado.","Busca reemplazar las degustaciones guiadas por espectáculos culturales debidamente planificados.","Representa el principal vacío actual, ya que el turista gastronómico exige comprender el origen de lo que consume.","Depende exclusivamente de la conversación espontánea que se genera entre el comerciante y el visitante.","Se enfoca en mejorar la exhibición visual de los productos para captar la atención inicial del turista."],a:2},
+{t:"tf",p:"De acuerdo con la propuesta del documento, en la experiencia sensorial auditiva se sugiere colocar música artificial de fondo para amenizar el ambiente del mercado.",a:false,why:"La propuesta indica «cero música artificial» y señala que los sonidos propios del mercado son su principal valor."},
+{t:"fill",p:"En la Estrategia de Doble Capa, el Bloque Base mantiene intacta la oferta popular y económica para conservar el comedor diario de los __________, mientras que el Bloque Superior suma experiencias narradas con un precio mayor dirigidas al __________ que busca comprender la cultura.",a:["cusqueños","turista"]},
+{t:"fill",p:"En la propuesta de marketing experiencial para el Mercado de San Pedro, las principales protagonistas de la experiencia gastronómica son las __________, quienes transmiten la autenticidad cultural mediante la narración de historias, la atención al turista y la presentación de los platos.",a:["caseras","vendedoras"]}
+]},
+{title:"Grupo 2 · Place Branding y posicionamiento de marca ciudad",q:[
+{t:"mc",p:"En el marco conceptual del marketing territorial aplicado a Cusco, ¿qué concepto se refiere al proceso estratégico de construcción y gestión del valor de marca de un territorio?",o:["Marketing turístico territorial.","Posicionamiento de marca ciudad.","Place Branding.","Desarrollo de mercados.","Marketing de contenidos."],a:2},
+{t:"mc",p:"Según la matriz BCG de la propuesta turística, ¿cómo se clasifican Tipón, Inkiltambo y Balcón del Diablo, respectivamente?",o:["Estrella, Interrogante y Vaca Lechera.","Vaca Lechera, Interrogante e Interrogante.","Interrogante, Estrella y Perro.","Vaca Lechera, Estrella y Perro.","Perro, Interrogante e Interrogante."],a:1},
+{t:"tf",p:"El público objetivo denominado “Explorador Cultural e Independiente” está compuesto por jóvenes de 25 a 34 años, interesados en experiencias culturales y viajes independientes.",a:true},
+{t:"fill",p:"El lugar distintivo que ocupa un destino en la mente del consumidor objetivo respecto a sus competidores se denomina __________.",a:["posicionamiento de marca"]},
+{t:"fill",p:"En la matriz de Ansoff, la estrategia que propone ofrecer experiencias interactivas y visitas temáticas en Tipón a los mercados actuales corresponde al desarrollo de __________.",a:["productos","desarrollo de productos"]}
+]},
+{title:"Grupo 3 · Co-Branding y alianzas estratégicas en La Convención",q:[
+{t:"mc",p:"En la propuesta para el kit premium “Valles de La Convención”, ¿qué factor estratégico determinó la elección de Nestlé frente a La Ibérica y Norandino?",o:["Su especialización en cacao Chuncho y menores costos de producción.","La integración de marcas reconocidas de café y chocolate, con distribución nacional y un solo contrato.","Su experiencia exportadora y posicionamiento en mercados orgánicos internacionales.","Su reconocimiento en chocolates artesanales y vinculación con productores locales.","Su capacidad de comercializar café y cacao por separado en mercados internacionales."],a:1},
+{t:"mc",p:"Según los conceptos de Simon Anholt en relación al Co-Branding, ¿cómo se complementa el Place Branding con la estrategia de co-branding para los productores de La Convención?",o:["Convirtiendo la región en un parque temático con producción agrícola activa de cacao y café.","Permitiendo que la marca corporativa reemplace la geografía local en las etiquetas de comercialización.","Organizando y comunicando atributos distintivos del territorio para que el origen actúe como fuente de diferenciación y valor percibido en el producto conjunto.","Garantizando que el producto se venda exclusivamente dentro de la región de origen.","Eliminando el uso de sellos de calidad y registros de Denominación de Origen."],a:2},
+{t:"tf",p:"La Denominación de Origen del Café Machu Picchu-Huadquiña y la marca colectiva Kall Kakao representan lo mismo, porque ambas garantizan las mismas características del producto.",a:false},
+{t:"fill",p:"El __________ es la asociación de dos o más marcas para presentar conjuntamente una oferta, combinando sus recursos y reputación.",a:["co-branding","cobranding"]},
+{t:"fill",p:"El código QR del kit premium da acceso a la historia completa de la familia __________.",a:["tito quispe"]}
+]},
+{title:"Grupo 4 · Estrategias genéricas de Michael Porter en cafeterías",q:[
+{t:"mc",p:"¿Cuáles son las tres estrategias genéricas propuestas por Michael Porter?",o:["Marketing, publicidad y ventas.","Liderazgo en costos, diferenciación y enfoque.","Innovación, productividad y posicionamiento.","Segmentación, diversificación y fidelización."],a:1},
+{t:"mc",p:"¿Cuál de los siguientes elementos constituye un pilar de la diferenciación de las cafeterías locales?",o:["Precios bajos y servicio personalizado.","La estandarización global de productos y atención.","La identidad cultural y el posicionamiento de marca.","El apoyo a productores internacionales."],a:2},
+{t:"fill",p:"La estrategia de __________ busca ofrecer atributos únicos y valorados por los clientes, como calidad, marca, servicio y diseño.",a:["diferenciación"]},
+{t:"fill",p:"El CRM y el storytelling buscan transformar al cliente ocasional en un cliente __________ mediante la fidelización y las historias verificables de los productores.",a:["frecuente"]},
+{t:"tf",p:"Las cafeterías locales de Cusco compiten principalmente mediante precios bajos, buscando superar a Starbucks a través del liderazgo en costos.",a:false}
+]},
+{title:"Grupo 5 · TQM aplicado a artesanía y textilería de exportación",q:[
+{t:"mc",p:"¿Cuáles son las dos dimensiones de la calidad artesanal que se presentan en el proyecto?",o:["Calidad económica y calidad comercial.","Calidad técnica y calidad percibida.","Calidad productiva y calidad financiera.","Calidad nacional y calidad internacional."],a:1},
+{t:"mc",p:"Según el análisis de las cinco fuerzas de Porter, ¿cómo se califica la rivalidad entre competidores en el mercado artesanal de Pisac?",o:["Baja.","Media.","Alta.","Inexistente."],a:2},
+{t:"fill",p:"En el modelo TQM-Andino, la calidad se define desde las necesidades del __________ y mejora con la participación de todas las personas.",a:["cliente"]},
+{t:"fill",p:"En el marketing de exportación de artesanías andinas, la autenticidad, el origen y la identidad cultural constituyen elementos de __________ frente a los productos industriales.",a:["diferenciación"]},
+{t:"tf",p:"Según los lineamientos del modelo TQM-Andino, la estandarización se aplica únicamente al proceso de producción, manteniendo intacta la identidad y el diseño único de cada pieza artesanal.",a:true}
+]},
+{title:"Grupo 6 · CRM y retención de clientes en restaurantes tradicionales",q:[
+{t:"mc",p:"¿Qué subsistema del SIM mide la satisfacción posvisita mediante encuestas QR y NPS?",o:["Inteligencia de marketing.","Investigación comercial.","Registro de datos internos.","Apoyo a las decisiones.","Gestión de proveedores."],a:1},
+{t:"mc",p:"¿Qué adaptación del CRM se propone para las quintas de mayor capacidad?",o:["Registro en caja y formularios impresos.","WhatsApp Business y tarjetas de visitas.","Ficha básica y registro manual de consumos.","Integración con POS y facturación corporativa.","Encuestas por QR y cupones de descuento."],a:3},
+{t:"tf",p:"En la ruta de implementación, la comparación de los KPI con la línea base corresponde a la fase de pruebas piloto.",a:false,why:"La comparación de los KPI con la línea base se ubica en la fase de seguimiento, correspondiente a los meses 5 y 6."},
+{t:"fill",p:"El núcleo integrador que transforma datos transaccionales dispersos en perfiles estratégicos para la acción comercial se denomina __________.",a:["crm"]},
+{t:"fill",p:"La perspectiva del tablero de control que comprende la capacitación y venta de seis preparaciones patrimoniales se denomina __________.",a:["rescate culinario"]}
+]}
+];
+let g=0,i=0,correct=0,attempted=false,completed=Array(groups.length).fill(false);
+const $=id=>document.getElementById(id);
+function norm(s){return s.toLocaleLowerCase('es').normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[.,;:¿?¡!]/g,'').trim()}
+function init(){groups.forEach((x,n)=>{let op=document.createElement('option');op.value=n;op.textContent=x.title;$('groupSelect').append(op)});$('groupSelect').addEventListener('change',e=>{g=+e.target.value;i=0;correct=0;render()});$('check').onclick=check;$('next').onclick=next;$('retry').onclick=()=>{i=0;correct=0;completed[g]=false;render()};$('nextGroup').onclick=()=>{if(g<5){g++;i=0;correct=0;$('groupSelect').value=g;render()}else{$('summary').textContent="Has terminado los seis grupos. ¡Felicitaciones por completar las 30 preguntas!";$('nextGroup').classList.add('hidden')}};render()}
+function render(){let q=groups[g].q[i];attempted=false;$('quiz').classList.remove('hidden');$('finished').classList.add('hidden');$('groupLabel').textContent=groups[g].title;$('countLabel').textContent=`Pregunta ${i+1} de 5`;$('bar').style.width=`${(i/5)*100}%`;$('kind').textContent=q.t==='mc'?'OPCIÓN MÚLTIPLE':q.t==='tf'?'VERDADERO O FALSO':'COMPLETAR';$('prompt').textContent=q.p;$('answers').innerHTML='';$('feedback').className='hidden';$('feedback').textContent='';$('check').classList.remove('hidden');$('check').disabled=false;$('next').classList.add('hidden');$('hint').textContent='No se muestra la solución hasta que compruebes tu respuesta.';
+if(q.t==='fill'){let inp=document.createElement('input');inp.id='fill';inp.placeholder='Escribe tu respuesta…';inp.style.width='100%';$('answers').append(inp)}
+else{let opts=q.t==='tf'?['Verdadero','Falso']:q.o;opts.forEach((v,n)=>{let lab=document.createElement('label');lab.className='option';let inp=document.createElement('input');inp.type='radio';inp.name='answer';inp.value=n;let span=document.createElement('span');span.textContent=q.t==='mc'?String.fromCharCode(65+n)+') '+v:v;lab.append(inp,span);$('answers').append(lab)})}}
+function check(){if(attempted)return;let q=groups[g].q[i],ok=false;if(q.t==='fill'){let val=norm($('fill').value);if(!val){$('fill').focus();return}ok=q.a.some(a=>val===norm(a))||(q.a.length>1&&q.a.every(a=>val.includes(norm(a))))}else{let sel=document.querySelector('input[name=answer]:checked');if(!sel)return;ok=q.t==='tf'?(+sel.value=== (q.a?0:1)):(+sel.value===q.a)}
+attempted=true;if(ok)correct++;$('feedback').className='feedback '+(ok?'good':'bad');$('feedback').textContent=ok?'¡Correcto! Muy bien. '+(q.why||'Puedes avanzar a la siguiente pregunta.'): 'Todavía no es correcto. Revisa el enunciado e inténtalo otra vez.'+(q.why?' Pista: '+q.why:'');$('check').classList.add('hidden');if(ok){$('next').classList.remove('hidden');$('hint').textContent='Respuesta correcta. Pulsa siguiente para continuar.'}else{$('check').textContent='Volver a intentar';$('check').classList.remove('hidden');$('check').onclick=()=>{attempted=false;$('feedback').className='hidden';$('check').textContent='Comprobar respuesta';$('check').onclick=check;$('check').disabled=false;if(q.t==='fill')$('fill').value='';else document.querySelectorAll('input[name=answer]').forEach(x=>x.checked=false)}}}
+function next(){if(i<4){i++;render()}else{completed[g]=true;$('quiz').classList.add('hidden');$('finished').classList.remove('hidden');$('bar').style.width='100%';$('score').textContent=`${correct} / 5`; $('summary').textContent=`Respuestas correctas al primer intento: ${correct} de 5. Puedes repetir el grupo o continuar.`;$('nextGroup').textContent=g===5?'Ver resultado final':'Ir al siguiente grupo →';if(g===5)$('nextGroup').onclick=()=>{$('score').textContent=`${groups.reduce((s,_,n)=>s+(completed[n]?1:0),0)} / 6 grupos`; $('summary').textContent='Has recorrido los seis grupos del cuestionario.';$('nextGroup').classList.add('hidden')}}}
+init();
+</script></body></html>
